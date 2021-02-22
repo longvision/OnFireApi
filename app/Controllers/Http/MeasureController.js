@@ -5,8 +5,9 @@ const Ingredient = use("App/Models/Ingredient");
 const Product = use("App/Models/Product");
 
 const {
-  packageGramPrice,
-  convertToGram,
+  convertToGramOrML,
+  packagePriceImGramOrML,
+  checkUnitCombination,
 } = require("../../../start/calculator");
 class MeasureController {
   /**
@@ -21,7 +22,7 @@ class MeasureController {
   async index({ request }) {
     const { page } = request.get();
 
-    const measures = await Measure.query().with("user").paginate(page);
+    const measures = await Measure.query().with("ingredients").paginate(page);
 
     return measures;
   }
@@ -51,12 +52,20 @@ class MeasureController {
       const price = ingredient.package_price;
       const unit = ingredient.unit;
 
+      //checa coerencia entre escolha de unidades.
+      if (!checkUnitCombination(data.unit, unit)) {
+        return response.status(400).send({
+          error: {
+            message: "Este ingrediente não pode usar esse tipo de medida!",
+          },
+        });
+      }
       //calcula o custo por grama do ingrediente cadastrado
-      const costPerGram = packageGramPrice(unit, size, price).toFixed(4);
+      const costPerGram = packagePriceImGramOrML(unit, size, price).toFixed(4);
 
       //calcula o custo total desse ingrediente na receita
       const recipeItemCost =
-        costPerGram * convertToGram(data.unit, data.quantity);
+        costPerGram * convertToGramOrML(data.unit, data.quantity);
 
       // console.log("costPerGram",costPerGram);
       // console.log("recipeItemCost", recipeItemCost);

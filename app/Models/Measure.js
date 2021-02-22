@@ -7,7 +7,7 @@
 const Model = use("Model");
 
 class Measure extends Model {
-  users() {
+  user() {
     return this.belongsTo("App/Models/User");
   }
   products() {

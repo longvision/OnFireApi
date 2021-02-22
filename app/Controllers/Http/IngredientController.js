@@ -13,11 +13,10 @@ class IngredientController {
    * @param {Response} ctx.response
    * @param {View} ctx.view
    */
-  async index({ params }) {
-    const ingredients = await Ingredient.query()
-      .where("user_id", params.user)
-      .with("user")
-      .fetch();
+  async index({ request }) {
+    const { page } = request.get();
+
+    const ingredients = await Ingredient.query().with("user").paginate(page);
 
     return ingredients;
   }

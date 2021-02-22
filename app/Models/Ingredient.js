@@ -4,7 +4,7 @@
 const Model = use("Model");
 
 class Ingredient extends Model {
-  measure() {
+  measures() {
     return this.belongsToMany("App/Models/Measure");
   }
   user() {

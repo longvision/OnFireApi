@@ -17,13 +17,18 @@ Route.get("/files/:id", "FileController.show");
 Route.group(() => {
   Route.post("/files", "FileController.store");
 
+  Route.delete("/ingredient/:id", "IngredientController.destroy");
+  Route.get("/ingredient/:id", "IngredientController.show");
+  Route.get("/ingredients", "IngredientController.index");
   Route.post("/ingredient", "IngredientController.store");
   Route.patch("/ingredient/:id", "IngredientController.update");
 
   Route.post("/measure", "MeasureController.store");
+  Route.delete("/measure/:id", "MeasureController.destroy");
   Route.get("/measures", "MeasureController.index");
   Route.get("/measure/:id", "MeasureController.show");
 
+  Route.delete("/product/:id", "ProductController.destroy");
   Route.get("/product/:id", "ProductController.show");
   Route.get("/products", "ProductController.index");
   Route.post("/products", "ProductController.store");

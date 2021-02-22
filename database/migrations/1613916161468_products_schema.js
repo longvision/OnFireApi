@@ -7,7 +7,6 @@ class ProductsSchema extends Schema {
   up() {
     this.create("products", (table) => {
       table.increments();
-
       table
         .integer("user_id")
         .unsigned()

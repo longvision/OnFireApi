@@ -20,11 +20,15 @@ Route.group(() => {
   Route.post("/ingredient", "IngredientController.store");
   Route.patch("/ingredient/:id", "IngredientController.update");
 
-  Route.post("/recipe", "RecipeController.store");
+  Route.post("/measure", "MeasureController.store");
+  Route.get("/measures", "MeasureController.index");
+  Route.get("/measure/:id", "MeasureController.show");
 
+  Route.get("/product/:id", "ProductController.show");
+  Route.get("/products", "ProductController.index");
   Route.post("/products", "ProductController.store");
 
-  Route.patch("/product-report/:id", "ProductReportController.update");
+  Route.patch("/product/:id", "ProductController.update");
 
   //projetos
   Route.resource("projects", "ProjectController")

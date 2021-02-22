@@ -53,7 +53,7 @@ class IngredientController {
       sold_region: data.sold_region,
       unit: data.unit,
       package_size: data.package_size,
-      package_price: data.package_size,
+      package_price: data.package_price,
       ingredient_name: data.name,
     });
 

@@ -8,7 +8,7 @@
  * Resourceful controller for interacting with products
  */
 const Product = use("App/Models/Product");
-const Recipe = use("App/Models/Recipe");
+const Measure = use("App/Models/Measure");
 
 class ProductController {
   /**
@@ -20,7 +20,13 @@ class ProductController {
    * @param {Response} ctx.response
    * @param {View} ctx.view
    */
-  async index({ request, response, view }) {}
+  async index({ request, response, view }) {
+    const { page } = request.get();
+
+    const products = await Product.query().with("user").paginate(page);
+
+    return products;
+  }
 
   /**
    * Render a form to be used for creating a new product.
@@ -63,7 +69,13 @@ class ProductController {
    * @param {Response} ctx.response
    * @param {View} ctx.view
    */
-  async show({ params, request, response, view }) {}
+  async show({ params }) {
+    const product = await Product.findOrFail(params.id);
+    await product.load("user");
+    await product.load("measures");
+
+    return product;
+  }
 
   /**
    * Render a form to update an existing product.
@@ -84,7 +96,30 @@ class ProductController {
    * @param {Request} ctx.request
    * @param {Response} ctx.response
    */
-  async update({ params, request, response }) {}
+  async update({ params, request, response }) {
+    const product = await Product.findOrFail(params.id);
+
+    const measure = await Measure.query()
+      .where("product_id", params.id)
+      .fetch();
+
+    let arrayOfCosts = measure.toJSON().map((item) => Number(item.cost));
+    let totalCost = arrayOfCosts.reduce((a, b) => a + b, 0);
+
+    console.log(totalCost.toFixed(2));
+
+    // const product = await Product.create({
+    //   title: data.title,
+    //   description: data.description,
+    //   active: true,
+    //   user_id: auth.user.id,
+    // });
+    product.merge({ total_cost: totalCost });
+
+    await product.save();
+
+    return measure;
+  }
 
   /**
    * Delete a product with id.

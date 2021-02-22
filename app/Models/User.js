@@ -16,7 +16,9 @@ class User extends Model {
       }
     });
   }
-
+  static get hidden() {
+    return ["password"];
+  }
   // addresses () {
   //   return this.hasMany('App/Models/UserAddress')
   // }

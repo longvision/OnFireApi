@@ -73,28 +73,7 @@ class ProductReportController {
    * @param {Request} ctx.request
    * @param {Response} ctx.response
    */
-  async update({ params, request, response }) {
-    const recipe = await Recipe.query().where("product_id", params.id).fetch();
-
-    const product = await Product.findOrFail(params.id);
-
-    let arrayOfCosts = recipe.toJSON().map((item) => Number(item.cost));
-    let totalCost = arrayOfCosts.reduce((a, b) => a + b, 0);
-
-    console.log(totalCost.toFixed(2));
-
-    // const product = await Product.create({
-    //   title: data.title,
-    //   description: data.description,
-    //   active: true,
-    //   user_id: auth.user.id,
-    // });
-    product.merge({ total_cost: totalCost });
-
-    await product.save();
-
-    return recipe;
-  }
+  async update({ params, request, response }) {}
 
   /**
    * Delete a product with id.

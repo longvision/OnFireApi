@@ -6,13 +6,16 @@
 /** @type {typeof import('@adonisjs/lucid/src/Lucid/Model')} */
 const Model = use("Model");
 
-class Recipe extends Model {
+class Measure extends Model {
   users() {
     return this.belongsTo("App/Models/User");
   }
+  products() {
+    return this.belongsTo("App/Models/Product");
+  }
   ingredients() {
-    return this.hasMany("App/Models/Ingredient");
+    return this.belongsTo("App/Models/Ingredient");
   }
 }
 
-module.exports = Recipe;
+module.exports = Measure;

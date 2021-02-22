@@ -7,16 +7,15 @@ const Schema = use("Schema");
 // Varias receita tem varios ingredientes
 //1 ingrediente tem varios precos
 
-class RecipesSchema extends Schema {
+class MeasuresSchema extends Schema {
   up() {
-    this.create("recipes", (table) => {
+    this.create("measures", (table) => {
       table.increments();
       table
         .integer("ingredient_id")
         .unsigned()
         .references("id")
         .inTable("ingredients")
-        .onUpdate("CASCADE")
         .onDelete("SET NULL");
       table
         .integer("user_id")
@@ -25,7 +24,13 @@ class RecipesSchema extends Schema {
         .inTable("users")
         .onUpdate("CASCADE")
         .onDelete("SET NULL");
-      table.integer("product_id").notNullable();
+      table
+        .integer("product_id")
+        .unsigned()
+        .references("id")
+        .inTable("products")
+        .onUpdate("CASCADE")
+        .onDelete("CASCADE");
       table.integer("quantity").notNullable();
       table.string("unit").notNullable();
       table.decimal("cost", 8, 4).notNullable();
@@ -34,8 +39,8 @@ class RecipesSchema extends Schema {
   }
 
   down() {
-    this.drop("recipes");
+    this.drop("measures");
   }
 }
 
-module.exports = RecipesSchema;
+module.exports = MeasuresSchema;

@@ -8,8 +8,8 @@ class Product extends Model {
     return this.belongsTo("App/Models/User");
   }
 
-  recipe() {
-    return this.hasMany("App/Models/Recipe");
+  measures() {
+    return this.hasMany("App/Models/Measure");
   }
   sales_report() {
     return this.hasOne("App/Models/SalesReport");

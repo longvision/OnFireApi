@@ -1,4 +1,4 @@
-'use strict'
+"use strict";
 
 /*
 |--------------------------------------------------------------------------
@@ -11,19 +11,19 @@
 |
 */
 const providers = [
-  '@adonisjs/framework/providers/AppProvider',
-  '@adonisjs/auth/providers/AuthProvider',
-  '@adonisjs/bodyparser/providers/BodyParserProvider',
-  '@adonisjs/cors/providers/CorsProvider',
-  '@adonisjs/lucid/providers/LucidProvider',
+  "@adonisjs/framework/providers/AppProvider",
+  "@adonisjs/auth/providers/AuthProvider",
+  "@adonisjs/bodyparser/providers/BodyParserProvider",
+  "@adonisjs/cors/providers/CorsProvider",
+  "@adonisjs/lucid/providers/LucidProvider",
 
-  '@adonisjs/mail/providers/MailProvider',
-  '@adonisjs/framework/providers/ViewProvider',
-  '@adonisjs/validator/providers/ValidatorProvider',
-  '@adonisjs/antl/providers/AntlProvider',
-  '@adonisjs/redis/providers/RedisProvider',
-  'adonis-kue/providers/KueProvider'
-]
+  "@adonisjs/mail/providers/MailProvider",
+  "@adonisjs/framework/providers/ViewProvider",
+  "@adonisjs/validator/providers/ValidatorProvider",
+  "@adonisjs/antl/providers/AntlProvider",
+  "@adonisjs/redis/providers/RedisProvider",
+  "adonis-kue/providers/KueProvider",
+];
 
 /*
 |--------------------------------------------------------------------------
@@ -35,9 +35,9 @@ const providers = [
 |
 */
 const aceProviders = [
-  '@adonisjs/lucid/providers/MigrationsProvider',
-  'adonis-kue/providers/CommandsProvider'
-]
+  "@adonisjs/lucid/providers/MigrationsProvider",
+  "adonis-kue/providers/CommandsProvider",
+];
 
 /*
 |--------------------------------------------------------------------------
@@ -51,7 +51,7 @@ const aceProviders = [
 |   { Route: 'Adonis/Src/Route' }
 |
 */
-const aliases = {}
+const aliases = {};
 
 /*
 |--------------------------------------------------------------------------
@@ -61,7 +61,7 @@ const aliases = {}
 | Here you store ace commands for your package
 |
 */
-const commands = []
+const commands = [];
 
 /*
 |--------------------------------------------------------------------------
@@ -71,6 +71,6 @@ const commands = []
 | Here you store your queue jobs
 |
 */
-const jobs = ['App/Jobs/NewTaskMail']
+const jobs = ["App/Jobs/NewTaskMail"];
 
-module.exports = { providers, aceProviders, aliases, commands, jobs }
+module.exports = { providers, aceProviders, aliases, commands, jobs };

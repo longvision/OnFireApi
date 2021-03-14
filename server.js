@@ -22,10 +22,10 @@ const { Ignitor } = require("@adonisjs/ignitor");
 const path = require("path");
 const https = require("https");
 const fs = require("fs");
-const pem = require("pem");
 
 // Certificate
 if (process.env.NODE_ENV === "development") {
+  const pem = require("pem");
   pem.createCertificate({ days: 1, selfSigned: true }, (error, keys) => {
     if (error) {
       return console.log(error);

@@ -43,7 +43,7 @@ class MeasureController {
       "product_id",
     ]);
 
-    const productId = await Product.findOrFail(data.product_id);
+    await Product.findOrFail(data.product_id);
 
     //Busca os dados do ingrediente na tabela de ingredientes cadastrados
     const ingredient = await Ingredient.findOrFail(data.ingredient_id);
@@ -95,9 +95,8 @@ class MeasureController {
    * @param {View} ctx.view
    */
   async show({ params }) {
-    const measures = await Measure.findOrFail(params.id);
+    const measures = await Measure.findBy("product_id", params.id);
 
-    await measures.load("users");
     await measures.load("ingredients");
     await measures.load("products");
 

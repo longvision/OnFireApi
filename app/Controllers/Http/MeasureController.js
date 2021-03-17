@@ -5,7 +5,7 @@ const Ingredient = use("App/Models/Ingredient");
 const Product = use("App/Models/Product");
 
 const {
-  convertToGramOrML,
+  convertToSmallUnits,
   packagePriceImGramOrML,
   checkUnitCombination,
 } = require("../../../start/calculator");
@@ -36,56 +36,53 @@ class MeasureController {
    * @param {Response} ctx.response
    */
   async store({ request, response, auth }) {
-    try {
-      const data = request.only([
-        "quantity",
-        "unit",
-        "ingredient_id",
-        "product_id",
-      ]);
+    const data = request.only([
+      "quantity",
+      "unit",
+      "ingredient_id",
+      "product_id",
+    ]);
 
-      await Product.findOrFail(data.product_id);
+    const productId = await Product.findOrFail(data.product_id);
 
-      //Busca os dados do ingrediente na tabela de ingredientes cadastrados
-      const ingredient = await Ingredient.findOrFail(data.ingredient_id);
-      const size = ingredient.package_size;
-      const price = ingredient.package_price;
-      const unit = ingredient.unit;
+    //Busca os dados do ingrediente na tabela de ingredientes cadastrados
+    const ingredient = await Ingredient.findOrFail(data.ingredient_id);
+    const size = ingredient.package_size;
+    const price = ingredient.package_price;
+    const unit = ingredient.unit;
 
-      //checa coerencia entre escolha de unidades.
-      if (!checkUnitCombination(data.unit, unit)) {
-        return response.status(400).send({
-          error: {
-            message: "Este ingrediente não pode usar esse tipo de medida!",
-          },
-        });
-      }
-      //calcula o custo por grama do ingrediente cadastrado
-      const costPerGram = packagePriceImGramOrML(unit, size, price).toFixed(4);
-
-      //calcula o custo total desse ingrediente na receita
-      const recipeItemCost =
-        costPerGram * convertToGramOrML(data.unit, data.quantity);
-
-      // console.log("costPerGram",costPerGram);
-      // console.log("recipeItemCost", recipeItemCost);
-      const measures = await Measure.create({
-        ingredient_id: data.ingredient_id,
-        product_id: data.product_id,
-        user_id: auth.user.id,
-        quantity: data.quantity,
-        unit: data.unit,
-        cost: recipeItemCost,
-      });
-
-      return measures;
-    } catch (err) {
-      return response.status(err.status).send({
+    //checa coerencia entre escolha de unidades.
+    if (!checkUnitCombination(data.unit, unit)) {
+      return response.status(400).send({
         error: {
-          message: "Este ingrediente ou produto não existe no seu catálogo!",
+          message: "Este ingrediente não pode usar esse tipo de medida!",
         },
       });
     }
+
+    // calcular o preco da medida usando o price, o unit e convertendo para a data.quantity fornecida pelo usuario.
+
+    //calcula o custo por grama do ingrediente cadastrado
+
+    const costPerGram = packagePriceImGramOrML(unit, size, price).toFixed(4);
+
+    //calcula o custo total desse ingrediente na receita
+
+    const recipeItemCost =
+      costPerGram * convertToSmallUnits(data.unit, data.quantity);
+
+    // console.log("costPerGram",costPerGram);
+    // console.log("recipeItemCost", recipeItemCost);
+    const measures = await Measure.create({
+      ingredient_id: data.ingredient_id,
+      product_id: data.product_id,
+      user_id: auth.user.id,
+      quantity: data.quantity,
+      unit: data.unit,
+      cost: recipeItemCost,
+    });
+
+    return measures;
   }
 
   /**

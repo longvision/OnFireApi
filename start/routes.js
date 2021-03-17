@@ -31,7 +31,7 @@ Route.group(() => {
   Route.delete("/product/:id", "ProductController.destroy");
   Route.get("/product/:id", "ProductController.show");
   Route.get("/products", "ProductController.index");
-  Route.post("/products", "ProductController.store");
+  Route.post("/product", "ProductController.store");
 
   Route.patch("/product/:id", "ProductController.update");
 

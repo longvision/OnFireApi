@@ -12,12 +12,12 @@ const packagePriceImGramOrML = (unit, package_size, package_price) => {
       break;
   }
 };
-const convertToGramOrML = (unit, quantity) => {
+const convertToSmallUnits = (unit, quantity) => {
   switch (unit) {
     case "KG":
       return quantity * 1000;
     case "g":
-      return true;
+      return quantity;
     case "L":
       return quantity * 1000;
     case "mL":
@@ -26,7 +26,7 @@ const convertToGramOrML = (unit, quantity) => {
       break;
   }
 };
-const checkUnitCombination = (ingredient_unit, measure_unit) => {
+const checkUnitCombination = (measure_unit, ingredient_unit) => {
   switch (measure_unit) {
     case "KG":
       if (ingredient_unit === "KG" || ingredient_unit === "g") return true;
@@ -52,7 +52,7 @@ const unitPrice = (size, price) => {
 };
 
 module.exports = {
-  convertToGramOrML,
+  convertToSmallUnits,
   checkUnitCombination,
   unitPrice,
   packagePriceImGramOrML,

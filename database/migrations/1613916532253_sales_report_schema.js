@@ -15,9 +15,9 @@ class SalesReportSchema extends Schema {
         .onUpdate("CASCADE")
         .onDelete("SET NULL");
       table.integer("sold_quantity").notNullable();
-      table.decimal("price_sold", 8, 4).notNullable();
-      table.decimal("total_cost", 8, 4).notNullable();
-      table.decimal("profit", 8, 4).notNullable();
+      table.decimal("price_sold", 15, 4).notNullable();
+      table.decimal("total_cost", 15, 4).notNullable();
+      table.decimal("profit", 15, 4).notNullable();
       table.timestamps();
     });
   }

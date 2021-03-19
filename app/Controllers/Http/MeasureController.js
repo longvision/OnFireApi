@@ -95,11 +95,14 @@ class MeasureController {
    * @param {View} ctx.view
    */
   async show({ params }) {
-    const measures = await Measure.findBy("product_id", params.id);
+    const measures = await Measure.query()
+      .whereHas("products", (builder) => {
+        builder.where("product_id", params.id);
+      })
+      .with("ingredients")
+      .fetch();
 
-    await measures.load("ingredients");
-    await measures.load("products");
-
+    // await product.load("measures");
     return measures;
   }
 

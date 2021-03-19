@@ -53,7 +53,7 @@ class ProductController {
     const product = await Product.create({
       title: data.title,
       description: data.description,
-      active: true,
+      active: false,
       user_id: auth.user.id,
     });
 

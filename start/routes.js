@@ -26,7 +26,7 @@ Route.group(() => {
   Route.post("/measure", "MeasureController.store");
   Route.delete("/measure/:id", "MeasureController.destroy");
   Route.get("/measures", "MeasureController.index");
-  Route.get("/measure/:id", "MeasureController.show");
+  Route.get("/measures/:id", "MeasureController.show");
 
   Route.delete("/product/:id", "ProductController.destroy");
   Route.get("/product/:id", "ProductController.show");

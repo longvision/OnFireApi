@@ -1,7 +1,7 @@
 "use strict";
 
 const File = use("App/Models/File");
-const Helpers = use("Helpers");
+
 const Drive = use("Drive");
 class FileController {
   async show({ params, response }) {
@@ -26,26 +26,46 @@ class FileController {
     request.multipart
       .file("image", { size: "2mb" }, async (file) => {
         try {
+          const query = request.get();
+
           const ContentType = file.headers["content-type"];
+
           const ACL = "public-read";
 
-          const fileName = file.clientName
+          const cleanName = file.clientName
             .normalize("NFD")
-            .replace(/[\u0300-\u036f]/g, "") // Remove acentos
-            .replace(/([^\w]+|\s+)/g, "-") // Substitui espaço e outros caracteres por hífen
-            .replace(/\-\-+/g, "-") // Substitui multiplos hífens por um único hífen
-            .replace(/(^-+|-+$)/, ""); // Remove hífens extras do final ou do inicio da string
+            .replace(/[\u0300-\u036f]/g, "")
+            // Remove acentos
+            .replace(/([^\w]+|\s+)/g, "-")
+            // Substitui espaço e outros caracteres por hífen
+            .replace(/\-\-+/g, "-")
+            // Substitui multiplos hífens por um único hífen
+            .replace(/(^-+|-+$)/, "");
+          // Remove hífens extras do final ou do inicio da string
 
-          const Key = `${(Math.random() * 100).toString(32)}-${fileName}`;
+          const randomName =
+            Math.random().toString(36).substring(2, 15) +
+            Math.random().toString(36).substring(2, 15);
+
+          const fileName = `${randomName}_`;
+
+          const stampName = `${Date.now()}.${cleanName}.${file.subtype}`;
+
+          // Uploads the file to Amazon S3 and stores the url
+          const s3Path = `${query.folder}/${fileName + stampName}`;
+
+          const Key = s3Path;
+
           const url = await Drive.put(Key, file.stream, {
             ContentType,
             ACL,
           });
 
           const createdFile = await File.create({
-            name: fileName,
+            name: stampName,
             key: Key,
             url,
+            product_id: query.productId,
             content_type: ContentType,
           });
 
@@ -60,6 +80,23 @@ class FileController {
         }
       })
       .process();
+  }
+  async destroy({ params, response }) {
+    try {
+      const { id: name } = params;
+      const file = await File.findByOrFail("name", name);
+
+      await Drive.delete(file.key);
+
+      await file.delete();
+    } catch (err) {
+      return response.status(err.status).send({
+        error: {
+          message: "File doesn't exists!",
+          err_message: err.message,
+        },
+      });
+    }
   }
 }
 

@@ -2,7 +2,11 @@
 
 /** @type {typeof import('@adonisjs/lucid/src/Lucid/Model')} */
 const Model = use("Model");
-const Env = use("Env");
-class File extends Model {}
+
+class File extends Model {
+  products() {
+    return this.belongsTo("App/Models/Product");
+  }
+}
 
 module.exports = File;

@@ -11,8 +11,6 @@ Route.post("passwords", "ForgotPasswordController.store").validator(
 Route.put("passwords", "ForgotPasswordController.update").validator(
   "ResetPassword"
 );
-//arquivos upload
-Route.get("/files/:id", "FileController.show");
 
 Route.group(() => {
   Route.post("/files", "FileController.store");
@@ -44,4 +42,5 @@ Route.group(() => {
   Route.resource("projects.tasks", "TaskController")
     .apiOnly()
     .validator(new Map([[["projects.tasks.store"], ["Task"]]]));
+  Route.resource("/files", "FileController").apiOnly();
 }).middleware(["auth"]);

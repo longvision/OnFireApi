@@ -19,10 +19,15 @@ class MeasureController {
    * @param {Response} ctx.response
    * @param {View} ctx.view
    */
-  async index({ request }) {
+  async index({ request, auth }) {
     const { page } = request.get();
 
-    const measures = await Measure.query().with("ingredients").paginate(page);
+    const user = await auth.getUser();
+
+    const measures = await Measure.query()
+      .where("user_id", user.id)
+      .with("ingredients")
+      .paginate(page);
 
     return measures;
   }
@@ -71,8 +76,8 @@ class MeasureController {
     const recipeItemCost =
       costPerGram * convertToSmallUnits(data.unit, data.quantity);
 
-    // console.log("costPerGram",costPerGram);
-    // console.log("recipeItemCost", recipeItemCost);
+    // ("costPerGram",costPerGram);
+    // ("recipeItemCost", recipeItemCost);
     const measures = await Measure.create({
       ingredient_id: data.ingredient_id,
       product_id: data.product_id,
@@ -81,7 +86,7 @@ class MeasureController {
       unit: data.unit,
       cost: recipeItemCost,
     });
-
+    await measures.load("ingredients");
     return measures;
   }
 
@@ -96,9 +101,7 @@ class MeasureController {
    */
   async show({ params }) {
     const measures = await Measure.query()
-      .whereHas("products", (builder) => {
-        builder.where("product_id", params.id);
-      })
+      .where("product_id", params.id)
       .with("ingredients")
       .fetch();
 

@@ -20,10 +20,14 @@ class ProductController {
    * @param {Response} ctx.response
    * @param {View} ctx.view
    */
-  async index({ request, response, view }) {
+  async index({ request, response, view, auth }) {
     const { page } = request.get();
 
-    const products = await Product.query().with("user").paginate(page);
+    const user = await auth.getUser();
+
+    const products = await Product.query()
+      .where("user_id", user.id)
+      .paginate(page);
 
     return products;
   }
@@ -106,7 +110,7 @@ class ProductController {
     let arrayOfCosts = measure.toJSON().map((item) => Number(item.cost));
     let totalCost = arrayOfCosts.reduce((a, b) => a + b, 0);
 
-    console.log(totalCost.toFixed(2));
+    totalCost.toFixed(2);
 
     // const product = await Product.create({
     //   title: data.title,

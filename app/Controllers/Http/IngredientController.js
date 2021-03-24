@@ -13,10 +13,14 @@ class IngredientController {
    * @param {Response} ctx.response
    * @param {View} ctx.view
    */
-  async index({ request }) {
+  async index({ request, auth }) {
     const { page } = request.get();
 
-    const ingredients = await Ingredient.query().with("user").paginate(page);
+    const user = await auth.getUser();
+
+    const ingredients = await Ingredient.query()
+      .where("user_id", user.id)
+      .paginate(page);
 
     return ingredients;
   }
@@ -86,6 +90,7 @@ class IngredientController {
     const ingredient = await Ingredient.findOrFail(params.id);
 
     const data = request.only([
+      "id",
       "name",
       "package_price",
       "package_size",
@@ -96,19 +101,30 @@ class IngredientController {
     ]);
 
     ingredient.merge(data);
-
     await ingredient.save();
 
-    await PriceHistory.create({
-      brand: data.brand,
-      seller: data.seller,
-      sold_region: data.sold_region,
-      unit: data.unit,
-      package_size: data.package_size,
-      package_price: data.package_price,
-      ingredient_name: data.name,
-    });
+    // const record = await PriceHistory.findBy("ingredient_id", data.id);
 
+    // if (record && record.ingredient_name === data.name) {
+    //   record.brand = data.brand;
+    //   record.seller = data.seller;
+    //   record.sold_region = data.sold_region;
+    //   record.unit = data.unit;
+    //   record.package_size = data.package_size;
+    //   record.package_price = data.package_price;
+    //   await record.save();
+    // } else {
+    //   await PriceHistory.create({
+    //     ingredient_id: data.id,
+    //     brand: data.brand,
+    //     seller: data.seller,
+    //     sold_region: data.sold_region,
+    //     unit: data.unit,
+    //     package_size: data.package_size,
+    //     package_price: data.package_price,
+    //     ingredient_name: data.name,
+    //   });
+    // }
     return ingredient;
   }
 

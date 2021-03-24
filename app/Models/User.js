@@ -30,6 +30,9 @@ class User extends Model {
   projects() {
     return this.hasMany("App/Models/Project");
   }
+  products() {
+    return this.hasMany("App/Models/Product");
+  }
 
   tasks() {
     return this.hasMany("App/Models/Task");

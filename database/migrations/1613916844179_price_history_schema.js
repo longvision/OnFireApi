@@ -11,9 +11,9 @@ class PriceHistorySchema extends Schema {
       table.string("brand").notNullable();
       table.text("seller").notNullable();
       table.text("sold_region").notNullable();
-      table.decimal("package_price", 8, 4).notNullable();
+      table.decimal("package_price", 15, 4).notNullable();
       table.string("unit").notNullable();
-      table.decimal("package_size", 8, 4).notNullable();
+      table.decimal("package_size", 15, 4).notNullable();
       table.timestamps();
     });
   }

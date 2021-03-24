@@ -11,6 +11,9 @@ class Product extends Model {
   measures() {
     return this.hasMany("App/Models/Measure");
   }
+  files() {
+    return this.hasMany("App/Models/File");
+  }
   sales_report() {
     return this.hasOne("App/Models/SalesReport");
   }

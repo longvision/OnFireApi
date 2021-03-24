@@ -31,9 +31,9 @@ class MeasuresSchema extends Schema {
         .inTable("products")
         .onUpdate("CASCADE")
         .onDelete("CASCADE");
-      table.integer("quantity").notNullable();
+      table.decimal("quantity", 15, 4).notNullable();
       table.string("unit").notNullable();
-      table.decimal("cost", 8, 4).notNullable();
+      table.decimal("cost", 15, 4).notNullable();
       table.timestamps();
     });
   }

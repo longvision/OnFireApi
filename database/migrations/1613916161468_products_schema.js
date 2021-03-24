@@ -17,7 +17,7 @@ class ProductsSchema extends Schema {
       table.string("title").notNullable();
       table.text("description").notNullable();
       table.boolean("active").notNullable();
-      table.decimal("total_cost", 8, 4);
+      table.decimal("total_cost", 15, 4);
       table.timestamps();
     });
   }

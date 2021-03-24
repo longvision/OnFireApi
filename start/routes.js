@@ -11,8 +11,6 @@ Route.post("passwords", "ForgotPasswordController.store").validator(
 Route.put("passwords", "ForgotPasswordController.update").validator(
   "ResetPassword"
 );
-//arquivos upload
-Route.get("/files/:id", "FileController.show");
 
 Route.group(() => {
   Route.post("/files", "FileController.store");
@@ -26,12 +24,12 @@ Route.group(() => {
   Route.post("/measure", "MeasureController.store");
   Route.delete("/measure/:id", "MeasureController.destroy");
   Route.get("/measures", "MeasureController.index");
-  Route.get("/measure/:id", "MeasureController.show");
+  Route.get("/measures/:id", "MeasureController.show");
 
   Route.delete("/product/:id", "ProductController.destroy");
   Route.get("/product/:id", "ProductController.show");
   Route.get("/products", "ProductController.index");
-  Route.post("/products", "ProductController.store");
+  Route.post("/product", "ProductController.store");
 
   Route.patch("/product/:id", "ProductController.update");
 
@@ -44,4 +42,5 @@ Route.group(() => {
   Route.resource("projects.tasks", "TaskController")
     .apiOnly()
     .validator(new Map([[["projects.tasks.store"], ["Task"]]]));
+  Route.resource("/files", "FileController").apiOnly();
 }).middleware(["auth"]);

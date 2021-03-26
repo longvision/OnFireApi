@@ -21,20 +21,20 @@ class ForgotPasswordController {
 
       await user.save();
 
-      // await Mail.send(
-      //   ["emails.forgot_password"],
-      //   {
-      //     email,
-      //     token: user.token,
-      //     // link: `${request.input("redirect_url")}?token=${user.token}`,
-      //   },
-      //   (message) => {
-      //     message
-      //       .to(user.email)
-      //       .from("r.n.hori@gmail.com", " | .com")
-      //       .subject("Recuperação de senha");
-      //   }
-      // );
+      await Mail.send(
+        "emails.forgot_password",
+        {
+          email,
+          token: user.token,
+          // link: `${request.input("redirect_url")}?token=${user.token}`,
+        },
+        (message) => {
+          message
+            .to(user.email)
+            .from("postmaster@grammage.com.br", " Grammage | grammage.com.br")
+            .subject("Password recovery");
+        }
+      );
     } catch (err) {
       return response.status(err.status).send({
         error: { message: "Este email não consta em nossa base de dados!" },

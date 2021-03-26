@@ -32,7 +32,7 @@ class ForgotPasswordController {
           message
             .to(user.email)
             .from("postmaster@grammage.com.br", " Grammage | grammage.com.br")
-            .subject("Grammage | Password recovery");
+            .subject("Password recovery");
         }
       );
     } catch (err) {

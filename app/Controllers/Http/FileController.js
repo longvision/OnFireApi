@@ -65,7 +65,7 @@ class FileController {
             name: stampName,
             key: Key,
             url,
-            product_id: query.productId,
+            product_id: query.product_id,
             content_type: ContentType,
           });
 

@@ -30,7 +30,6 @@ Route.group(() => {
   Route.get("/product/:id", "ProductController.show");
   Route.get("/products", "ProductController.index");
   Route.post("/product", "ProductController.store");
-
   Route.patch("/product/:id", "ProductController.update");
 
   //projetos

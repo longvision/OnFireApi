@@ -22,7 +22,7 @@ class ForgotPasswordController {
       await user.save();
 
       await Mail.send(
-        "emails.forgot_password",
+        ["emails.forgot_password"],
         {
           email,
           token: user.token,

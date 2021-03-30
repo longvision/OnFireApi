@@ -23,7 +23,7 @@ class FileController {
   }
 
   async store({ request, response }) {
-    request.multipart
+    const file = request.multipart
       .file("image", { size: "2mb" }, async (file) => {
         try {
           const query = request.get();
@@ -61,7 +61,7 @@ class FileController {
             ACL,
           });
 
-          const createdFile = await File.create({
+          const fileCreated = await File.create({
             name: stampName,
             key: Key,
             url,
@@ -69,7 +69,7 @@ class FileController {
             content_type: ContentType,
           });
 
-          return createdFile;
+          return response.status(200).send(fileCreated);
         } catch (e) {
           return response.status(e.status).send({
             e: {
@@ -80,6 +80,8 @@ class FileController {
         }
       })
       .process();
+
+    return file;
   }
   async destroy({ params, response }) {
     try {

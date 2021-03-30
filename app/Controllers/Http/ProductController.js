@@ -28,7 +28,7 @@ class ProductController {
     const products = await Product.query()
       .where("user_id", user.id)
       .with("files", (builder) => {
-        builder.select("product_id", "url"); // user_id is needed
+        builder.select("product_id", "url", "name"); // product_id is needed
       })
       .paginate(page);
 
